@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/dghubble/go-twitter/twitter"
 	"github.com/dghubble/oauth1"
 )
@@ -30,9 +32,18 @@ func main() {
 	// demultiplexer
 	demux := twitter.NewSwitchDemux()
 	demux.Tweet = func(tweet *twitter.Tweet) {
+		msg := ""
 		if tweet.Coordinates != nil {
 			coords := tweet.Coordinates.Coordinates
-			logger.Info("Lat: %f Long: %f", coords[0], coords[1])
+			msg = fmt.Sprintf("%s Lat: %f Long: %f", msg, coords[0], coords[1])
+		}
+
+		if tweet.Place != nil {
+			msg = fmt.Sprintf("%s  Country: %s", msg, tweet.Place.Country)
+		}
+
+		if msg != "" {
+			logger.Info("%s", msg)
 		}
 	}
 
