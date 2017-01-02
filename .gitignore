@@ -3,3 +3,4 @@ pkg/*
 vendor/*
 !vendor.json
 run.sh
+tweet-map
